@@ -1,0 +1,74 @@
+import UIKit
+
+class CalculatorViewController: UIViewController {
+    @IBOutlet weak var displayLabel: UILabel!
+    
+    var firstNumber: Double?
+    var secondNumber: Double?
+    var operation: String?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+    }
+    
+    @IBAction func numberButtonPressed(_ sender: UIButton) {
+        if let number = sender.currentTitle {
+            if displayLabel.text == "0" {
+                displayLabel.text = number
+            } else {
+                displayLabel.text! += number
+            }
+        }
+    }
+    
+    @IBAction func operationButtonPressed(_ sender: UIButton) {
+        if let op = sender.currentTitle {
+            if let number = Double(displayLabel.text!) {
+                if firstNumber == nil {
+                    firstNumber = number
+                    operation = op
+                    displayLabel.text = "0"
+                } else {
+                    secondNumber = number
+                    calculate()
+                    operation = op
+                    displayLabel.text = "0"
+                }
+            }
+        }
+    }
+    
+    @IBAction func equalsButtonPressed(_ sender: UIButton) {
+        if let number = Double(displayLabel.text!) {
+            secondNumber = number
+            calculate()
+            firstNumber = nil
+            operation = nil
+        }
+    }
+    
+    @IBAction func clearButtonPressed(_ sender: UIButton) {
+        displayLabel.text = "0"
+        firstNumber = nil
+        secondNumber = nil
+        operation = nil
+    }
+    
+    func calculate() {
+        if let op = operation {
+            switch op {
+            case "+":
+                displayLabel.text = "\(firstNumber! + secondNumber!)"
+            case "-":
+                displayLabel.text = "\(firstNumber! - secondNumber!)"
+            case "×":
+                displayLabel.text = "\(firstNumber! * secondNumber!)"
+            case "÷":
+                displayLabel.text = "\(firstNumber! / secondNumber!)"
+            default:
+                break
+            }
+        }
+    }
+}
